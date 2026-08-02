@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
-from geometry_msgs.msg import TwistStamped
+from geometry_msgs.msg import Twist
 from cv_bridge import CvBridge
 import cv2
 
@@ -51,7 +51,7 @@ class AprilTagNode(Node):
             10)
             
         # Publisher for velocities
-        self.cmd_pub = self.create_publisher(TwistStamped, '/diff_cont/cmd_vel', 10)
+        self.cmd_pub = self.create_publisher(Twist, '/cmd_vel', 10)
         
         # Publisher for the debug visualization
         self.viz_pub = self.create_publisher(Image, '/camera/tag_visualization', 10)
@@ -94,9 +94,7 @@ class AprilTagNode(Node):
             viz_msg.data = viz_image.tobytes()
             self.viz_pub.publish(viz_msg)
 
-        cmd = TwistStamped()
-        cmd.header.stamp = self.get_clock().now().to_msg()
-        cmd.header.frame_id = "base_link"
+        cmd = Twist()
         
         current_time = self.get_clock().now()
         dt = (current_time - self.last_time).nanoseconds / 1e9
@@ -106,17 +104,17 @@ class AprilTagNode(Node):
             # Steering: Error from center of image 
             # If tag is on the left (center_x < w/2), err_x is positive -> turn left (positive angular.z)
             err_x = (w / 2) - tag_data['center_x'] 
-            cmd.twist.angular.z = self.angular_pid.compute(err_x, dt)
+            cmd.angular.z = self.angular_pid.compute(err_x, dt)
             
             # Distance: Try to maintain safe_distance
             err_dist = tag_data['distance'] - self.safe_distance
             
             # Small deadband to prevent micro-oscillations when stopped
             if abs(err_dist) < 0.05:
-                cmd.twist.linear.x = 0.0
+                cmd.linear.x = 0.0
                 self.linear_pid.integral = 0.0
             else:
-                cmd.twist.linear.x = self.linear_pid.compute(err_dist, dt)
+                cmd.linear.x = self.linear_pid.compute(err_dist, dt)
                 
         else:
             # Reset integrals if tag is lost to prevent windup
