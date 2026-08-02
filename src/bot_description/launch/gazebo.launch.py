@@ -70,7 +70,7 @@ def generate_launch_description():
         output='screen'
     )
 
-        from launch.actions import AppendEnvironmentVariable
+    from launch.actions import AppendEnvironmentVariable
     
     # Append the models directory to GZ_SIM_RESOURCE_PATH so it can find model://apriltag_box
     set_env = AppendEnvironmentVariable(
