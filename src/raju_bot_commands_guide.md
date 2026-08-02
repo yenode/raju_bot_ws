@@ -27,7 +27,7 @@ First, ensure that your workspace is built and sourced correctly. Whenever you m
 cd ~/raju_bot_ws
 
 # Build the required packages
-colcon build --packages-select bot_description bot_controller
+colcon build --packages-select bot_description bot_controller bot_detection
 
 # Source the workspace setup file
 source install/setup.bash
@@ -86,6 +86,24 @@ If you want to view the camera stream:
 1. Click **Add** -> **By topic** -> Select the **Camera / Image** topic.
 2. The `camera_link` is perfectly aligned `8.7 cm` forward in the `base_footprint` frame.
 
-## 6. Troubleshooting
+## 6. AprilTag Detection and Following
+The robot is equipped with a camera and an AprilTag detector node that implements a full PID controller to smoothly track a `tag25h9` family tag and maintain a safe distance of 1.0 meter.
+
+```bash
+# In a new terminal, source the workspace
+cd ~/raju_bot_ws
+source install/setup.bash
+
+# Run the AprilTag Follower node
+ros2 run bot_detection apriltag_detector
+```
+
+To view the live visualization feed with detection overlays:
+```bash
+ros2 run rqt_image_view rqt_image_view
+# Select /camera/tag_visualization in the dropdown
+```
+
+## 7. Troubleshooting
 - **Robot is floating or sinking in Gazebo**: The origin of the STL mesh (`raju.stl`) and wheels determines their placement relative to the `base_link`. The `base_footprint_joint` `Z` origin is strictly set to `0.072m` to ensure the wheels (`0.035m` radius + `0.037m` Z-offset) sit exactly on the `Z=0` ground plane.
 - **Controllers fail to load**: If `spawner_diff_cont` or `spawner_joint_state_broadcaster` instantly fail or time out, it is highly likely a zombie Gazebo process is holding the controller manager. Run `killall -9 ruby && killall -9 gz` to clean it up before relaunching.
