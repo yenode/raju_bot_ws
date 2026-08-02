@@ -79,6 +79,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        set_env,
         node_robot_state_publisher,
         gazebo,
         spawn_entity,
