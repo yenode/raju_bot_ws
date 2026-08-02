@@ -58,15 +58,24 @@ def generate_launch_description():
             get_package_share_directory('bot_controller'), 'launch', 'controller.launch.py')]),
     )
 
-    # ROS-GZ Bridge (Only clock needed for sim time, ros2_control does the rest directly in ROS)
+    # Bridge clock conditionally based on Gazebo version
+    gz_version = os.environ.get('GZ_VERSION', '')
+    if gz_version == 'harmonic':
+        clock_bridge_arg = '/world/sample_world/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock'
+        clock_remappings = [('/world/sample_world/clock', '/clock')]
+    else:
+        clock_bridge_arg = '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock'
+        clock_remappings = []
+
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
-            '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+            clock_bridge_arg,
             '/camera/image_raw@sensor_msgs/msg/Image[gz.msgs.Image',
             '/camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo'
         ],
+        remappings=clock_remappings,
         output='screen'
     )
 
