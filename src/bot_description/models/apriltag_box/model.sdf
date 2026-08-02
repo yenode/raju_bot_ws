@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+  <model name="apriltag_box">
+    <pose>3 0 0.25 0 0 3.14159</pose>
+    <static>true</static>
+    <link name="box_link">
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.5 0.5 0.5</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.5 0.5 0.5</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.7 0.5 0.3 1</ambient>
+          <diffuse>0.7 0.5 0.3 1</diffuse>
+        </material>
+      </visual>
+      
+      <!-- AprilTag Plane -->
+      <visual name="apriltag_visual">
+        <pose>0.251 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.001 0.4171875 0.4171875</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>1.0 1.0 1.0 1.0</ambient>
+          <diffuse>1.0 1.0 1.0 1.0</diffuse>
+          <specular>0.1 0.1 0.1 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://apriltag_box/materials/textures/tag25_09_00012_scaled.png</albedo_map>
+              <roughness>0.9</roughness>
+              <metalness>0.1</metalness>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>
