@@ -16,7 +16,13 @@ sudo apt-get install -y \
   ros-humble-teleop-twist-keyboard \
   ros-humble-ros-gzharmonic \
   ros-humble-ros-gz-bridge \
-  ros-humble-gz-ros2-control
+  ros-humble-gz-ros2-control \
+  ros-humble-cv-bridge \
+  python3-pip
+
+# Install Python dependencies required for AprilTag detection
+# Note: numpy must be < 2.0.0 to prevent ABI crashes with cv_bridge
+pip install 'numpy<2.0.0' opencv-python pupil-apriltags
 ```
 
 ## 2. Setup and Build
