@@ -14,7 +14,6 @@ sudo apt-get install -y \
   ros-humble-robot-state-publisher \
   ros-humble-rviz2 \
   ros-humble-teleop-twist-keyboard \
-  ros-humble-ros-gzharmonic \
   ros-humble-ros-gz-bridge \
   ros-humble-gz-ros2-control \
   ros-humble-cv-bridge \
