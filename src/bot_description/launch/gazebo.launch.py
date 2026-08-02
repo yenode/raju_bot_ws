@@ -70,6 +70,14 @@ def generate_launch_description():
         output='screen'
     )
 
+        from launch.actions import AppendEnvironmentVariable
+    
+    # Append the models directory to GZ_SIM_RESOURCE_PATH so it can find model://apriltag_box
+    set_env = AppendEnvironmentVariable(
+        name='GZ_SIM_RESOURCE_PATH',
+        value=os.path.join(pkg_share, 'models')
+    )
+
     return LaunchDescription([
         node_robot_state_publisher,
         gazebo,
