@@ -24,7 +24,9 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'apriltag_detector = bot_detection.apriltag_node:main'
+            'apriltag_detector = bot_detection.apriltag_node:main',
+            'odometry_node = bot_detection.odometry_node:main'
+
         ],
     },
 )
