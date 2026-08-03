@@ -75,7 +75,7 @@ You can also use the custom Python script we developed to automatically drive th
 # In a new terminal
 cd ~/raju_bot_ws
 source install/setup.bash
-ros2 run bot_controller robot_controller
+ros2 run bot_controller robot_controller --ros-args -p use_sim_time:=true
 ```
 
 ### Option C: Publishing Directly from CLI
@@ -99,8 +99,11 @@ The robot is equipped with a camera and an AprilTag detector node that implement
 cd ~/raju_bot_ws
 source install/setup.bash
 
-# Run the AprilTag Follower node
-ros2 run bot_detection apriltag_detector
+# Run the Custom Odometry Node
+ros2 run bot_detection odometry_node --ros-args -p use_sim_time:=true
+
+# In a separate terminal, run the AprilTag Follower node
+ros2 run bot_detection apriltag_detector --ros-args -p use_sim_time:=true
 ```
 
 To view the live visualization feed with detection overlays:
